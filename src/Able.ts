@@ -17,7 +17,7 @@ export namespace Able {
    * With the above example value, given a list of abilities `["foo"]`, the
    * resolved abilities will be `["foo", "bar", "baz", "bam"]`.
    */
-  export interface GroupDefinition { [key: string]: AbilitySet; }
+  export interface GroupDefinition { [key: string]: AbilitySet|string|null|undefined; }
 
   /**
    * A map of values extracted or to be applied in a list of abilities. A
@@ -33,10 +33,10 @@ export namespace Able {
    * Unlike `.resolve`, this function does not apply or resolve values.
    *
    * ```ts
-   * const definition = { foo: "bar" };
+   * const definition = { foo: ["bar"] };
    * const abilities = ["foo", "bam"];
    * Able.flatten(definition, abilities);
-   * // ["foo", "bar", "bam"]
+   * // ["foo", "bam", "bar"]
    * ```
    *
    * @param definition
@@ -45,12 +45,10 @@ export namespace Able {
   export function flatten(definition: GroupDefinition, abilities: AbilitySet): AbilitySet {
     abilities = abilities.slice();
     for (const ability of abilities) {
-      const members = definition[ability];
-      if (members) {
-        for (const member of members) {
-          if (!abilities.includes(member)) {
-            abilities.push(member);
-          }
+      const members = arr(definition[ability]);
+      for (const member of members) {
+        if (!abilities.includes(member)) {
+          abilities.push(member);
         }
       }
     }
@@ -65,9 +63,8 @@ export namespace Able {
    *
    * ```ts
    * const abilities = ["foo", "bam", "?foo=1", "?x[]=3"];
-   * Able.extractedValues(abilities);
-   * // [ { foo: "1", x: [ "3" ] },
-   * //   [ "foo", "bam" ] ]
+   * Able.extractValues(abilities);
+   * // [ { foo: '1', x: [ '3' ] }, [ 'foo', 'bam' ] ]
    * ```
    *
    * @param abilities
@@ -106,7 +103,7 @@ export namespace Able {
    * const abilities = ["article:{articleId}:read", "post:{postId}:read"]
    * const values = { articleId: ["1", "2"] }
    * Able.applyValues(abilities, values);
-   * // ["article:1:read", "article:2:read"]
+   * // [ 'article:1:read', 'article:2:read' ]
    * ```
    *
    * @param abilities
@@ -131,10 +128,10 @@ export namespace Able {
    * Flatten abilities, and extract and apply embedded values.
    *
    * ```ts
-   * const definition = { writer: "article:{articleId}:write" };
+   * const definition = { writer: ["article:{articleId}:write"] };
    * const abilities = ["writer", "?articleId[]=4"];
    * Able.resolve(definition, abilities);
-   * // ["article:4:write"]
+   * // [ 'writer', 'article:4:write' ]
    * ```
    *
    * @param definition
