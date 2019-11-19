@@ -1,2 +1,4 @@
 #!/usr/bin/env bash
-node -e 'console.log(require("./package.json").version)' > .new-version
+sed "s/$(cat .old-version)/$(node -e 'console.log(require("./package.json").version)')/g" < README.md > ~README.md
+rm README.md .old-version
+mv ~README.md README.md

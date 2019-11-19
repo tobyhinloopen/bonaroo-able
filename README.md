@@ -8,5 +8,5 @@ npm i bonaroo-able
 
 
 ```html
-<script src="https://unpkg.com/bonaroo-able@1.1.1/dist/bonaroo-able.min.js"></script>
+<script src="https://unpkg.com/bonaroo-able@1.1.2/dist/bonaroo-able.min.js"></script>
 ```
