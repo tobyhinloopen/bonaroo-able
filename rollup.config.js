@@ -8,11 +8,12 @@ export default [{
   output: {
     name: "Able",
     file: pkg.browser,
-    format: 'iife'
+    format: 'iife',
+    sourcemap: true,
   },
   plugins: [
     resolve(),
     commonjs(),
     minify({ comments: false }),
-  ]
+  ],
 }];
