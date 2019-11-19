@@ -12,8 +12,10 @@
     "rollup": "rollup -c",
     "ci": "(npm run test-build && npm run rollup) & npm t & wait",
     "prepublishOnly": "npm run ci && npm run rollup",
+    "preversion": "./preversion.sh",
     "test": "jest",
     "test-build": "npm run build && node test-build.js",
+    "version": "./version.sh",
     "watch": "jest --watch"
   },
   "repository": {
