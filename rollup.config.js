@@ -1,0 +1,18 @@
+import resolve from 'rollup-plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
+import minify from 'rollup-plugin-babel-minify';
+import pkg from './package.json';
+
+export default [{
+  input: 'dist/index.js',
+  output: {
+    name: "Able",
+    file: pkg.browser,
+    format: 'iife'
+  },
+  plugins: [
+    resolve(),
+    commonjs(),
+    minify({ comments: false }),
+  ]
+}];
