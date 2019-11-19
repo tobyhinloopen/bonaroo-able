@@ -10,7 +10,8 @@
   "scripts": {
     "build": "tsc",
     "rollup": "rollup -c",
-    "ci": "npm run test-build & npm t & wait",
+    "ci": "(npm run test-build && npm run rollup) & npm t & wait",
+    "prepublishOnly": "npm run ci && npm run rollup",
     "test": "jest",
     "test-build": "npm run build && node test-build.js",
     "watch": "jest --watch"
